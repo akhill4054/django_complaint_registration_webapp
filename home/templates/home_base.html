@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block head_block %}
+<style>
+    /* Add a black background color to the top navigation */
+    .topnav {
+        background-color: #333;
+        overflow: hidden;
+    }
+
+    /* Style the links inside the navigation bar */
+    .topnav a {
+        float: left;
+        color: #f2f2f2;
+        text-align: center;
+        padding: 14px 32px;
+        text-decoration: none;
+        font-size: 17px;
+    }
+
+    /* Change the color of links on hover */
+    .topnav a:hover {
+        background-color: #ddd;
+        color: black;
+    }
+
+    /* Add a color to the active/current link */
+    .topnav a.active {
+        background-color: #5166ed;
+        color: white;
+    }
+</style>
+{% endblock %}
+
+{% block body_block %}
+{% load static %}
+<div class="p-3 d-flex flex-row">
+    <div class="d-flex flex-column justify-content-center mr-3 border-right pr-2">
+        <img height="50px" width="50px" class="card p-1" src="{% static 'images/complaints.png' %}" />
+    </div>
+    <div class="d-flex flex-column justify-content-center mt-2">
+        <h2>Online Complaint Registration</h1>
+    </div>
+</div>
+{% block home_body %}
+{% endblock %}
+{% endblock %}
