@@ -1,0 +1,8 @@
+{% extends "base.html" %}
+{% block title_block %} Page Not Found {% endblock %}
+{% block body_block %}
+{% load static %}
+<div class="mt-5 row justify-content-center">
+    <img style="width: 50vw;" src="{% static 'images/404.png' %}">
+</div>
+{% endblock %}
