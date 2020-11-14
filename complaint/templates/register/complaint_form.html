@@ -6,7 +6,7 @@
     <img height="80px" src="{% static 'images/form.png' %}" />
     <p class="display-4 ml-3">Register a complaint</p>
 </div>
-<form name="complaint_form" class="needs-validation" onsubmit="return validateForm();" action="submit" method="POST" novalidate>
+<form name="complaint_form" onsubmit="return validateForm();" action="submit" method="POST" novalidate>
     <div class="m-2 pl-5 pr-5 pt-3 pb-3 jumbotron">
         <mark>* Indicates a required field.</mark>
         <div class="col-10">
@@ -91,6 +91,7 @@
                 </div>
                 <div class="col-9">
                     <input type="text" id="phone" name="phone" class="form-control" placeholder="Enter contact number">
+                    <div class="invalid-feedback">Invalid phone number!</div>
                 </div>
             </div>
             <div class="row mt-4">

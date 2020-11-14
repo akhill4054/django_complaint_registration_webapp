@@ -12,39 +12,50 @@ function confirm_reset() {
 // Form validation
 function validateForm() {
     let form = document.forms['complaint_form'];
+    let flag = true;
+    
+    for (let i = 0; i < form.elements.length; i++) {
+        let element = form.elements[i];
+        if (!element.checkValidity()) {
+            element.classList.add('is-invalid');
+            flag = false;
+        } else {
+            element.classList.remove('is-invalid');
+            element.classList.add('is-valid');
+        }
+    }
 
-    // PIN validation
+    // PIN code validation
     let pinInput = form['pin'];
-    if (true) {
+    let pinFeedback = document.getElementById('pin-feedback');
+    if (pinInput.value == "") {
+        pinFeedback.innerText = 'Please enter your email address.';
+    } else if (!/^\d{6}$/.test(pinInput.value)) {
         // Entered PIN is invalid
-        let pinFeedback = document.getElementById('pin-feedback');
-        pinFeedback.innerText = (pinInput.value == "") ? "Enter your PIN code." : "Invaild PIN code!";
-        pinInput.value = ""
+        pinInput.classList.add('is-invalid');
+        pinFeedback.innerText = 'Entered PIN code is invalid!';
+        flag = false;
     }
-    // Email validation
-    let emailInput = form['email']
-    if (true) {
-        // Entered email is invalid
-        let emailFeedback = document.getElementById('email-feedback');
-        emailFeedback.innerText = (emailInput.value == "") ? "Please enter your email address." : "Invaild email address!";
-        emailInput.value = ""
-    }
-}
 
-(function () {
-    'use strict';
-    window.addEventListener('load', function () {
-        // Fetch all the forms we want to apply custom Bootstrap validation styles to
-        let forms = document.getElementsByClassName('needs-validation');
-        // Loop over them and prevent submission
-        let validation = Array.prototype.filter.call(forms, function (form) {
-            form.addEventListener('submit', function (event) {
-                if (form.checkValidity() === false) {
-                    event.preventDefault();
-                    event.stopPropagation();
-                }
-                form.classList.add('was-validated');
-            }, false);
-        });
-    }, false);
-})();
+    // Email validation
+    let emailInput = form['email'];
+    let emailFeedback = document.getElementById('email-feedback');
+    if (emailInput.value === "") {
+        emailFeedback.innerText = 'Enter your PIN code.';
+    } else if (!/[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/.test(emailInput.value)) {
+        // Entered PIN is invalid
+        emailInput.classList.add('is-invalid');
+        emailFeedback.innerText = 'Entered email address is invalid!';
+        flag = false;
+    }
+
+    // Phone validation
+    let phoneInput = form['phone'];
+    if (phone.value != "" && !/^\d{10}$/.test(phoneInput.value)) {
+        // Entered phone number is invalid
+        phoneInput.classList.add('is-invalid');
+        flag = false;
+    }
+
+    return flag;
+}
