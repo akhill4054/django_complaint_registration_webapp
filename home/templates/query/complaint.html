@@ -1,0 +1,54 @@
+{% extends "home_base.html" %}
+{% block title_block %} Complaint {% endblock %}
+{% block home_body %}
+{% load static %}
+<div class="topnav">
+    <a href="/home">Home</a>
+    <a href="/browse">Browse</a>
+    <a href="/about">About</a>
+</div>
+<div class="pl-5 pr-5 pt-4 mb-5">
+    {% if complaint is not None %}
+    <div class="pl-4 pr-4 pt-3 pb-2 card">
+        <div class="row mt-2 ml-1">
+            <p><mark id="reg-date-time"></mark></p>
+            <p> &nbsp; by &nbsp; <mark>{{ complaint.applicant.name_prefix }} {{ complaint.applicant.name }}</mark></p>
+        </div>
+        <div class="row ml-1">
+            <p>Category : &nbsp;
+            <p class="h5">{{ complaint.cat }}</p>
+            </p>
+        </div>
+        <div class="row ml-1">
+            <p>Service Name : &nbsp;
+            <p class="h5">{{ complaint.service }}</p>
+            </p>
+        </div>
+        <div class="row ml-1">
+            <p>Date : &nbsp; {{ complaint.date }}</p>
+        </div>
+        <div class="row ml-1">
+            <p>City : &nbsp; {{ complaint.applicant.city }}</p>
+        </div>
+        <div class="row ml-1">
+            <p>Description : &nbsp; {{ complaint.desc }}</p>
+        </div>
+    </div>
+</div>
+{% endif %}
+{% if complaint is None %}
+<div class="row justify-content-center">
+    {% load static %}
+    <img height="275vh" src="{% static 'images/error.png' %}">
+</div>>
+<div class="row justify-content-center">
+    <h3>We couldn't find any complaint with complaint id <mark>'{{ complaint_id }}'</mark>.</h3>
+</div>>
+{% endif %}
+</div>
+{% load static %}
+<script>
+    let rdt = new Date('{{ reg_date_time }}Z');
+</script>
+<script src="{% static 'JS/complaint.js' %}"></script>
+{% endblock %}

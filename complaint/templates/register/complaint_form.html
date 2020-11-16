@@ -7,118 +7,114 @@
     <p class="display-4 ml-3">Register a complaint</p>
 </div>
 <form name="complaint_form" onsubmit="return validateForm();" action="submit" method="POST" novalidate>
+    {% csrf_token %}
     <div class="m-2 pl-5 pr-5 pt-3 pb-3 jumbotron">
         <mark>* Indicates a required field.</mark>
-        <div class="col-10">
-            <div class="row mt-4">
-                <div class="col-2 mr-5">
-                    <label for="category" class="mr-5">* Category :</label>
-                </div>
-                <div class="col-9">
-                    <select name="category" id="category" class="form-control" required>
-                        <option disabled selected value> -- select an option -- </option>
-                        {% for category in categories %}
-                        <option value="category">{{ category }}</option>
-                        {% endfor %}
-                    </select>
-                    <div class="invalid-feedback">Please choose a category.</div>
-                </div>
+        <div class="row mt-4">
+            <div class="col-2 mr-5">
+                <label for="category" class="mr-5">* Category :</label>
             </div>
-            <div class="row mt-3">
-                <div class="col-2 mr-5">
-                    <label for="serivce" class="mr-5">* Serivce :</label>
-                </div>
-                <div class="col-9">
-                    <input type="text" class="form-control" placeholder="Enter serivce" id="serivce" required>
-                    <div class="invalid-feedback">Please enter the serivce name. (e.g. Company/institution name)</div>
-                </div>
+            <div class="col-9">
+                <select name="category" id="category" class="form-control" required>
+                    <option disabled selected value> -- select an option -- </option>
+                    {% for category in categories %}
+                    <option value="{{ category }}">{{ category }}</option>
+                    {% endfor %}
+                </select>
+                <div class="invalid-feedback">Please choose a category.</div>
             </div>
-            <div class="row mt-3">
-                <div class="col-2">
-                    <img class="mr-2" height="30px" width="30px"
-                        src="https://img.icons8.com/cotton/64/000000/planner.png" />
-                    <label for="date">* Date :</label>
-                </div>
-                <div class="col-9">
-                    <input type="date" id="date" name="date" min='1990-01-01' class="ml-5 form-control" required>
-                    <div class="invalid-feedback ml-5">Pick the incident date.</div>
-                </div>
+        </div>
+        <div class="row mt-3">
+            <div class="col-2 mr-5">
+                <label for="service" class="mr-5">* Serivce :</label>
             </div>
-            <div class="row mt-3">
-                <div class="col-2 mr-5">
-                    <label for="desc">* Description :</label>
-                    <p>(Max 1000 characters)</p>
-                </div>
-                <div class="col-9">
-                    <textarea rows="5" cols="75" class="form-control" placeholder="Enter description" name="desc"
-                        id="desc" maxlength="1000" required></textarea>
-                        <div class="invalid-feedback">Describe your complaint.</div>
-                </div>
+            <div class="col-9">
+                <input type="text" class="form-control" name="service" placeholder="Enter serivce" id="service"
+                    required>
+                <div class="invalid-feedback">Please enter the serivce name. (e.g. Company/institution name)</div>
+            </div>
+        </div>
+        <div class="row mt-3">
+            <div class="col-2">
+                <img class="mr-2" height="30px" width="30px"
+                    src="https://img.icons8.com/cotton/64/000000/planner.png" />
+                <label for="date">* Date :</label>
+            </div>
+            <div class="col-9">
+                <input type="date" id="date" name="date" min='1990-01-01' class="ml-5 form-control" required>
+                <div class="invalid-feedback ml-5">Pick the incident date.</div>
+            </div>
+        </div>
+        <div class="row mt-3">
+            <div class="col-2 mr-5">
+                <label for="desc">* Description :</label>
+                <p>(Max 1000 characters)</p>
+            </div>
+            <div class="col-9">
+                <textarea rows="5" cols="75" class="form-control" placeholder="Enter description" name="desc" id="desc"
+                    maxlength="1000" required></textarea>
+                <div class="invalid-feedback">Describe your complaint.</div>
             </div>
         </div>
     </div>
     <div class="m-2 pl-5 pr-5 pt-3 pb-3 jumbotron">
         <mark>Sender/Applicant details</mark>
-        <div class="col-10">
-            <div class="row mt-4">
-                <div class="col-2 mr-5">
-                    <label for="name" class="mr-5">* Name :</label>
-                </div>
-                <div class="col-2">
-                    <select name="gender" id="gender" class="form-control">
-                        <option value="ms">Ms.</option>
-                        <option value="mr">Mr.</option>
-                        <option value="mrs">Mrs.</option>
-                    </select>
-                </div>
-                <div class="col-7">
-                    <input type="text" id="name" name="name" class="form-control" placeholder="Enter name" required>
-                    <div class="invalid-feedback">Enter your full name.</div>
-                </div>
+        <div class="row mt-4">
+            <div class="col-2 mr-5">
+                <label for="name" class="mr-5">* Name :</label>
             </div>
-            <div class="row mt-4">
-                <div class="col-2 mr-5">
-                    <label for="email" class="mr-5">* Email :</label>
-                </div>
-                <div class="col-9">
-                    <input type="text" id="email" name="email" class="form-control" placeholder="Enter email" required>
-                    <div id="email-feedback" class="invalid-feedback">Please enter your email address.</div>
-                </div>
+            <div class="col-2">
+                <select name="gender" id="gender" class="form-control">
+                    <option value="ms">Ms.</option>
+                    <option value="mr">Mr.</option>
+                    <option value="mrs">Mrs.</option>
+                </select>
             </div>
-            <div class="row mt-4">
-                <div class="col-2 mr-5">
-                    <label for="phone" class="mr-5">Contact :</label>
-                </div>
-                <div class="col-9">
-                    <input type="text" id="phone" name="phone" class="form-control" placeholder="Enter contact number">
-                    <div class="invalid-feedback">Invalid phone number!</div>
-                </div>
-            </div>
-            <div class="row mt-4">
-                <div class="col-2 mr-5">
-                    <label for="city" class="mr-5">* City :</label>
-                </div>
-                <div class="col-9">
-                    <input type="text" id="city" name="city" class="form-control" placeholder="City name" required>
-                    <div class="invalid-feedback">Enter your city.</div>
-                </div>
-            </div>
-            <div class="row mt-4">
-                <div class="col-2 mr-5">
-                    <label for="phone" class="mr-5">* PIN Code :</label>
-                </div>
-                <div class="col-9">
-                    <input type="text" id="pin" name="pin" class="form-control" placeholder="Enter PIN code" required>
-                    <div id="pin-feedback" class="invalid-feedback">Enter your PIN code.</div>
-                </div>
+            <div class="col-7">
+                <input type="text" id="name" name="name" class="form-control" placeholder="Enter name" required>
+                <div class="invalid-feedback">Enter your full name.</div>
             </div>
         </div>
-        <div class="col-10 pr-5">
-            <div class="row pr-4 mt-4 mb-5 justify-content-end">
+        <div class="row mt-4">
+            <div class="col-2 mr-5">
+                <label for="email" class="mr-5">* Email :</label>
+            </div>
+            <div class="col-9">
+                <input type="text" id="email" name="email" class="form-control" placeholder="Enter email" required>
+                <div id="email-feedback" class="invalid-feedback">Please enter your email address.</div>
+            </div>
+        </div>
+        <div class="row mt-4">
+            <div class="col-2 mr-5">
+                <label for="phone" class="mr-5">Contact :</label>
+            </div>
+            <div class="col-9">
+                <input type="text" id="phone" name="phone" class="form-control" placeholder="Enter contact number">
+                <div class="invalid-feedback">Invalid phone number!</div>
+            </div>
+        </div>
+        <div class="row mt-4">
+            <div class="col-2 mr-5">
+                <label for="city" class="mr-5">* City :</label>
+            </div>
+            <div class="col-9">
+                <input type="text" id="city" name="city" class="form-control" placeholder="City name" required>
+                <div class="invalid-feedback">Enter your city.</div>
+            </div>
+        </div>
+        <div class="row mt-4">
+            <div class="col-2 mr-5">
+                <label for="phone" class="mr-5">* PIN Code :</label>
+            </div>
+            <div class="col-9">
+                <input type="text" id="pin" name="pin" class="form-control" placeholder="Enter PIN code" required>
+                <div id="pin-feedback" class="invalid-feedback">Enter your PIN code.</div>
+            </div>
+        </div>
+            <div class="row mr-4 p-2 pr-4 mt-4 mb-5 justify-content-end">
                 <input type="submit" class="mr-4 btn btn-primary">
                 <input type="reset" class="btn btn-secondary" onclick="return confirm_reset();">
             </div>
-        </div>
     </div>
 </form>
 {% load static %}

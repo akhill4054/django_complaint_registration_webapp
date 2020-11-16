@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block title_block %} Submission failed {% endblock %}
+{% block body_block %}
+<div class="col justify-content-center p-5">
+    <div class="row justify-content-center">
+        {% load static %}
+    <img height="300vh" src="{% static 'images/error.png' %}">
+    </div>>
+    <div class="row justify-content-center">
+        <h2>Something went wrong, couldn't submit your complaint.</h2>
+        <h5 class="mt-2">We're sorry for the inconvenience. Try submitting your complaint after some time.</h5>
+    </div>>
+</div>
+{% endblock %}

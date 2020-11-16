@@ -15,8 +15,20 @@ function buildItem(category) {
     + "</div>";
 }
 
+// Click listsners
 function itemClickListener(category) {
-    window.location.href = 'browse/' + category;
+    window.location.href = 'browse/category/' + category;
+}
+
+let searchInput = document.getElementById('search-box');
+
+function search() {
+    let complaintId = searchInput.value;
+    if (complaintId != '') {
+        window.location.href = 'browse/complaint/' + complaintId;
+    } else {
+        alert('Complaint id is empty!');
+    }
 }
 
 // Building list

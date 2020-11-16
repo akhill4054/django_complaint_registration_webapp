@@ -10,20 +10,24 @@ class Complaint:
         self.cat = cat
         self.service = service
         self.date = date
-        self.reg_date_time = datetime.utcnow()
+        self.reg_date_time = datetime.utcnow().isoformat()
         self.desc = desc
         self.applicant = applicant
 
     @classmethod
-    def from_dict(self, data):    
-        return Complaint(
-            data['id'],
+    def from_dict(self, data):
+        complaint = Complaint(
             data['cat'],
             data['service'],
             data['date'],
             data['desc'],
             Applicant.from_dict(data['applicant'])
         )
+
+        complaint.id = data['id']
+        complaint.reg_date_time = data['reg_date_time']
+
+        return complaint
 
     def asdict(self):
         assert (self.id != None), "Complaint document id was null"

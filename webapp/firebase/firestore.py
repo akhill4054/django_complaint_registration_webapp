@@ -62,16 +62,20 @@ def post_complaint(complaint):
     doc_ref = db.collection(u'complaints').document()
     # Setting document id
     complaint.id = doc_ref.id
+
     dict = complaint.asdict()
     doc_ref.set(dict)
+
     # Incrementing total complaints count
     __incr_dcr_complaint_count(True, dict['cat'])
+    # Returning doc id
+    return doc_ref.id
 
 
 def get_complaint(id):
     docs = db.collection(u'complaints').where('id', '==', id).stream()
     for doc in docs:
-        return doc.to_dict()
+        return Complaint.from_dict(doc.to_dict())
     return None
 
 
@@ -94,13 +98,10 @@ def delete_all():
 
     # Deleting all docs
     for doc in docs:
-        cat = doc.to_dict()['cat']
-        updated_meta_dict[cat] = updated_meta_dict[cat] - 1
         doc.reference.delete()
-        deleted += 1
 
     # Updating total complaints count
-    updated_meta_dict['total_complaints'] = updated_meta_dict['total_complaints'] - deleted
+    for k in updated_meta_dict: updated_meta_dict[k] = 0
     meta_doc_ref.set(updated_meta_dict)
 
 def fix_counts():
@@ -150,5 +151,3 @@ def __populate(count):
     for i in range(count):
         category = categories[randrange(0, len(categories))]
         post_complaint(__generate_complaint(category))
-
-# __populate(30)
