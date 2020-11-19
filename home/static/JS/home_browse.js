@@ -17,7 +17,7 @@ function buildItem(category) {
 
 // Click listsners
 function itemClickListener(category) {
-    window.location.href = 'browse/category/' + category;
+    window.location.href = 'browse/category/' + category + '/1';
 }
 
 let searchInput = document.getElementById('search-box');

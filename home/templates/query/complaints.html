@@ -8,12 +8,48 @@
     <a href="/about">About</a>
 </div>
 {% if complaints is not None %}
-<div class="pl-5 pr-5 pt-4 mb-5">
-    
+<div id="main-col" class="pl-5 pr-5 pt-1 mb-5">
+    {% for complaint in complaints %}
+    <div class="pl-4 pr-4 pt-3 mt-3 pb-2 card">
+        <div class="row mt-2 ml-1">
+            <p><mark id="reg-date-time">{{ complaint.reg_date_time }}</mark></p>
+            <p> &nbsp; by &nbsp; <mark>{{ complaint.applicant.name_prefix }} {{ complaint.applicant.name }}</mark></p>
+        </div>
+        <div class="row ml-1">
+            <p>Category : &nbsp;
+            <p class="h5">{{ complaint.cat }}</p>
+            </p>
+        </div>
+        <div class="row ml-1">
+            <p>Service Name : &nbsp;
+            <p class="h5">{{ complaint.service }}</p>
+            </p>
+        </div>
+        <div class="row ml-1">
+            <p>Date : &nbsp; {{ complaint.date }}</p>
+        </div>
+        <div class="row ml-1">
+            <p>City : &nbsp; {{ complaint.applicant.city }}</p>
+        </div>
+        <div class="row ml-1">
+            <p>Description : &nbsp; {{ complaint.desc }}</p>
+        </div>
+    </div>
+    {% endfor %}
+    <div class="row justify-content-center mt-4">
+        <ul class="pagination">
+            {% if page > 1 %}
+                {% if page > 2 %}
+                <li class="page-item"><a class="page-link" href="1">First</a></li>
+                {% endif %}
+                <li class="page-item"><a class="page-link" href='{{ page|add:"-1" }}'>Previous</a></li>
+            {% endif %}
+            {% if isNextPage %}
+                <li class="page-item"><a class="page-link" href='{{ page|add:"1" }}'>Next</a></li>
+            {% endif %}
+        </ul>
+    </div>
 </div>
-<script>
-    let complaints = {{ complaints }};
-</script>
 {% endif %}
 {% if complaints is None %}
 <div class="row justify-content-center">
@@ -23,9 +59,6 @@
 <div class="row justify-content-center">
     <h3>There're no complaints registered under {{ category }} right now.</h3>
 </div>>
-<script>
-    let complaints = [];
-</script>
 {% endif %}
 </div>
 {% load static %}

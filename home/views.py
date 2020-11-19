@@ -55,9 +55,15 @@ def query_complaint(request, complaint_id):
     }, request))
 
 
-def query_complaints(request, category):
+def query_complaints(request, category, page):
     template = loader.get_template('query/complaints.html')
+
+    complaints = firestore.get_complaints(category, page)
+    isNextPage = len(complaints) > 10
+
     return HttpResponse(template.render({
-        'complaints': None,
+        'complaints': complaints[0:10] if len(complaints) != 0 else None,
+        'page': page,
+        'isNextPage': isNextPage,
         'category': category.lower,
     }, request))

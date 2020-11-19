@@ -1,3 +1,4 @@
+from random import randrange
 import firebase_admin
 from firebase_admin import credentials
 from firebase_admin import firestore
@@ -38,11 +39,14 @@ def total_complaints():
 
         return 0
 
+
 def total_complaints_meta_inf():
     doc_ref = db.collection(u'meta-data').document('meta-inf')
     return doc_ref.get().to_dict()
 
 # Use this to increment or decrement total number of complaints
+
+
 def __incr_dcr_complaint_count(incr, category):
     doc_ref = db.collection(u'meta-data').document('meta-inf')
 
@@ -87,6 +91,47 @@ def delete_complaint(id):
     doc_ref.delete()
 
 
+# Compound queries
+def get_complaints(category, page):
+    last_doc = None
+
+    for i in range(1, page + 1):
+        if not last_doc:
+            first_query = (
+                db.collection(u'complaints')
+                .where(u'cat', '==', category)
+                .order_by(u'reg_date_time')
+                .limit(10 * (i - 1) + 1)
+            )
+        else:
+            first_query = (
+                db.collection(u'complaints')
+                .where(u'cat', '==', category)
+                .order_by(u'reg_date_time')
+                .start_at(last_doc)
+                .limit(10 * (i - 1) + 1)
+            )
+
+        docs = list(first_query.stream())
+
+        if len(docs) == 0:
+            return []
+        else:
+            last_doc = docs[-1]
+
+    query = (
+        db.collection(u'complaints')
+        .where(u'cat', '==', category)
+        .order_by(u'reg_date_time')
+        .start_at(last_doc)
+        .limit(11)
+    )
+
+    docs = list(Complaint.from_dict(doc.to_dict()) for doc in query.stream())
+
+    return docs
+
+
 # Admin
 def delete_all():
     docs = db.collection(u'complaints').stream()
@@ -101,8 +146,10 @@ def delete_all():
         doc.reference.delete()
 
     # Updating total complaints count
-    for k in updated_meta_dict: updated_meta_dict[k] = 0
+    for k in updated_meta_dict:
+        updated_meta_dict[k] = 0
     meta_doc_ref.set(updated_meta_dict)
+
 
 def fix_counts():
     docs = db.collection(u'complaints').stream()
@@ -119,16 +166,17 @@ def fix_counts():
         cat = doc.to_dict()['cat']
         updated_meta_dict[cat] = updated_meta_dict[cat] + 1
         count += 1
-    
+
     updated_meta_dict['total_complaints'] = count
 
     meta_doc_ref.set(updated_meta_dict)
 
+
 # Test methods
-def __generate_complaint(category):
+def __generate_complaint(category, count=None):
     return Complaint(
         category,
-        'CBI',
+        'CBI' if not count else "Complaint {}".format(count),
         '11/12/13',
         'Were ere reererer rere re woumbaba we',
         Applicant(
@@ -141,7 +189,6 @@ def __generate_complaint(category):
         )
     )
 
-from random import randrange
 
 def __populate(count):
     json_file = staticfiles_storage.open('files/categories.json')
@@ -149,5 +196,6 @@ def __populate(count):
     json_file.close()
 
     for i in range(count):
-        category = categories[randrange(0, len(categories))]
-        post_complaint(__generate_complaint(category))
+        # category = categories[randrange(0, len(categories))]
+        category = categories[0]
+        post_complaint(__generate_complaint(category, i + 1))
