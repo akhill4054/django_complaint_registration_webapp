@@ -21,6 +21,6 @@ from home.views import invalid
 urlpatterns = [
     path('', include('home.urls')),
     path('complaint/', include('complaint.urls')),
-    path('admin/', admin.site.urls),
+    path('admin/', include('custom_admin.urls')),
     re_path(r'.', invalid),
 ]
