@@ -101,7 +101,7 @@ def get_complaints(category, page):
                 db.collection(u'complaints')
                 .where(u'cat', '==', category)
                 .order_by(u'reg_date_time')
-                .limit(10 * (i - 1) + 1)
+                .limit(1)
             )
         else:
             first_query = (
@@ -109,7 +109,7 @@ def get_complaints(category, page):
                 .where(u'cat', '==', category)
                 .order_by(u'reg_date_time')
                 .start_at(last_doc)
-                .limit(10 * (i - 1) + 1)
+                .limit(10 + 1)
             )
 
         docs = list(first_query.stream())

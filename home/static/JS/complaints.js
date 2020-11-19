@@ -9,7 +9,7 @@ function formattedComplaintDateTime(rdt) {
 
 // Converting UTC date time string to formatted local date time for each list item
 for (let i = 0; i < list.children.length - 1; i++) {
-    let dateTimeField = list.children[i].children[0].children[0];
+    let dateTimeField = list.children[i].children[0].children[0].children[0];
     let rdt = new Date(dateTimeField.innerText + 'Z');
     dateTimeField.innerText = formattedComplaintDateTime(rdt);
 }

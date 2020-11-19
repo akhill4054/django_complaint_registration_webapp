@@ -19,7 +19,7 @@ class Complaint:
         complaint = Complaint(
             data['cat'],
             data['service'],
-            data['date'],
+            '-'.join(data['date'].split('-')[::-1]),
             data['desc'],
             Applicant.from_dict(data['applicant'])
         )
