@@ -1,5 +1,4 @@
 from django.db import models
-import firestore_model
 from datetime import datetime
 
 
